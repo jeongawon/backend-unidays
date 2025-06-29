@@ -15,7 +15,7 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOriginPatterns(List.of(
-                "http://localhost:3000"               // ✅ 로컬 개발용
+                "http://localhost:5500"               // ✅ 로컬 개발용
                                                       // ✅ 배포될 프론트 주소 (나중에 필요시 추가)
         ));
         config.setAllowCredentials(true);

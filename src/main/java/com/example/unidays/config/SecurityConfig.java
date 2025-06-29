@@ -17,12 +17,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
-    private final CorsConfigurationSource corsConfigurationSource; // ⚠️ 자동 주입
+    private final CorsConfigurationSource corsConfigurationSource;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource)) // ✅ CORS 설정
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/oauth2/**", "/login/**", "/css/**", "/js/**", "/images/**").permitAll()
@@ -40,13 +40,15 @@ public class SecurityConfig {
                         })
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .defaultSuccessUrl("/api/user/me", true)
                         .authorizationEndpoint(authEndpoint ->
                                 authEndpoint.authorizationRequestRepository(new HttpSessionOAuth2AuthorizationRequestRepository())
                         )
                         .userInfoEndpoint(userInfo ->
                                 userInfo.userService(customOAuth2UserService)
                         )
+                        .successHandler((request, response, authentication) -> {
+                            response.sendRedirect("http://localhost:5500"); // ✅ 프론트 리디렉션
+                        })
                 );
 
         return http.build();
