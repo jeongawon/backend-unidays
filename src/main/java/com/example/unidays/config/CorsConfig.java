@@ -14,20 +14,30 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
+
+        // 허용할 Origin (credentials 사용 시 반드시 정확한 도메인 명시)
         config.setAllowedOriginPatterns(List.of(
-                "http://localhost:5500"               // ✅ 로컬 개발용
-                                                      // ✅ 배포될 프론트 주소 (나중에 필요시 추가)
+                "https://zesty-mermaid-f2b857.netlify.app",
+                "https://unidays-project.com"
         ));
+
+        // 자격 증명 허용 (쿠키 포함)
         config.setAllowCredentials(true);
-        config.addAllowedHeader("*");
-        config.addAllowedHeader("Content-Type");
-        config.addAllowedMethod("*");  // GET, POST 등 전부 허용
-        config.addAllowedMethod("OPTIONS");
+
+        // 허용할 HTTP 메서드
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        // 허용할 요청 헤더 (Content-Type 등 명시)
+        config.setAllowedHeaders(List.of("Content-Type", "Authorization", "Accept", "Origin"));
+
+        // 노출할 응답 헤더 (JS에서 접근 가능)
         config.addExposedHeader("Set-Cookie");
         config.addExposedHeader("Authorization");
 
+        // 모든 경로에 대해 위 설정을 적용
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
+
         return source;
     }
 }

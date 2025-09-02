@@ -22,6 +22,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .requiresChannel(channel ->
+                        channel.anyRequest().requiresSecure()
+                )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
@@ -47,7 +50,8 @@ public class SecurityConfig {
                                 userInfo.userService(customOAuth2UserService)
                         )
                         .successHandler((request, response, authentication) -> {
-                            response.sendRedirect("http://localhost:5500"); // ✅ 프론트 리디렉션
+                            // ✅ JSON 응답 대신 실제 리다이렉트
+                            response.sendRedirect("https://zesty-mermaid-f2b857.netlify.app/kimga/startwithgoogle.html");
                         })
                 );
 

@@ -20,17 +20,22 @@ public class SubjectController {
     private final SubjectService subjectService;
     private final UserRepository userRepository;
 
+    // ✅ 로그인한 사용자의 전공 기반 과목 조회
     @GetMapping("/major")
     public ResponseEntity<List<Subject>> getMajorSubjects(HttpSession session) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("user");
 
-        // ✅ SessionUser에는 major 없음 → DB에서 User를 다시 조회
         User user = userRepository.findByEmail(sessionUser.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
 
-        // ✅ 실제 User에서 전공 정보 꺼냄
         List<Subject> subjects = subjectService.getMajorSubjects(user.getMajor());
+        return ResponseEntity.ok(subjects);
+    }
 
+    // ✅ 교양 과목만 조회 (세션 필요 없음)
+    @GetMapping("/culture")
+    public ResponseEntity<List<Subject>> getCultureSubjects() {
+        List<Subject> subjects = subjectService.getGeneralSubjects();
         return ResponseEntity.ok(subjects);
     }
 }
