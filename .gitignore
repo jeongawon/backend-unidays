@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 기본 생성물
 HELP.md
 .gradle/
@@ -49,3 +50,29 @@ application.yml
 
 ### 업로드 파일 등 저장 디렉토리 (예: 파일 첨부 기능 시) ###
 uploads/
+=======
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*
+>>>>>>> 7ce5d043437f5910762b00190f21ec9daae87174
